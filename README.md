@@ -35,19 +35,23 @@ We are using the following AWS services and their features to build our infrastr
 
 ## Prerequisites
 
-- LocalStack Pro with the [`localstack` CLI](https://docs.localstack.cloud/getting-started/installation/#localstack-cli).
+- A valid [LocalStack for AWS license](https://localstack.cloud/pricing). Your license provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/getting-started/auth-token/) to activate LocalStack.
+- [`localstack` CLI](https://docs.localstack.cloud/getting-started/installation/#localstack-cli).
 - [Serverless Application Model](https://docs.localstack.cloud/user-guide/integrations/aws-sam/) with the [`samlocal`](https://github.com/localstack/aws-sam-cli-local) installed.
 - [AWS CLI](https://docs.localstack.cloud/user-guide/integrations/aws-cli/) with the [`awslocal` wrapper](https://docs.localstack.cloud/user-guide/integrations/aws-cli/#localstack-aws-cli-awslocal).
 - [Python 3.9.0](https://www.python.org/downloads/release/python-390/) in the `PATH`
 
-Start LocalStack Pro with the `LOCALSTACK_AUTH_TOKEN` pre-configured:
+## Start LocalStack
+
+Start LocalStack with the `LOCALSTACK_AUTH_TOKEN` pre-configured:
 
 ```shell
 export LOCALSTACK_AUTH_TOKEN=<your-auth-token>
-DEBUG=1 localstack start
+make start
+make ready
 ```
 
-We specified DEBUG=1 to get the printed LocalStack logs directly in the terminal to help us see the event-driven architecture in action. If you prefer running LocalStack in detached mode, you can add the `-d` flag to the `localstack start` command, and use Docker Desktop to view the logs.
+We specified `DEBUG=1` to get the printed LocalStack logs directly in the terminal to help us see the event-driven architecture in action. If you prefer running LocalStack in detached mode, you can add the `-d` flag to the `localstack start` command, and use Docker Desktop to view the logs.
 
 ## Instructions
 
