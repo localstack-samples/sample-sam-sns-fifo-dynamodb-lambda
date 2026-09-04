@@ -9,35 +9,30 @@ usage:
 
 ## Install dependencies
 install:
-		@which localstack || pip install localstack
-		@which awslocal || pip install awscli-local
-		@which samlocal || pip install aws-sam-cli-local
+		@which lstk || npm install -g @localstack/lstk
+		@which aws || pip install awscli
+		@which sam || pip install aws-sam-cli
 
 # Deploy the infrastructure
 build:
-		samlocal build;
+		lstk sam build;
 
 ## Deploy the infrastructure
 deploy:
-		samlocal deploy --resolve-s3 --no-confirm-changeset;
+		lstk sam deploy --resolve-s3 --no-confirm-changeset;
 
 ## Start LocalStack in detached mode
 start:
 		@test -n "${LOCALSTACK_AUTH_TOKEN}" || (echo "LOCALSTACK_AUTH_TOKEN is not set. Find your token at https://app.localstack.cloud/workspace/auth-token"; exit 1)
-		@LOCALSTACK_AUTH_TOKEN=$(LOCALSTACK_AUTH_TOKEN) DEBUG=1 localstack start -d
+		@LOCALSTACK_AUTH_TOKEN=$(LOCALSTACK_AUTH_TOKEN) LOCALSTACK_DEBUG=1 lstk start
 
 ## Stop the Running LocalStack container
 stop:
 		@echo
-		localstack stop
-
-## Make sure the LocalStack container is up
-ready:
-		@echo Waiting on the LocalStack container...
-		@localstack wait -t 30 && echo LocalStack is ready to use! || (echo Gave up waiting on LocalStack, exiting. && exit 1)
+		lstk stop
 
 ## Save the logs in a separate file, since the LS container will only contain the logs of the last sample run.
 logs:
-		@localstack logs > logs.txt
+		@lstk logs > logs.txt
 
-.PHONY: usage install run start stop ready logs
+.PHONY: usage install run start stop logs

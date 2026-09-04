@@ -32,39 +32,33 @@ jobs:
         with:
           use-installer: true
 
-      - name: Setup SAM-Local 
+      - name: Install lstk
         run: |
-          pip install aws-sam-cli-local
-          samlocal --help
+          npm install -g @localstack/lstk
+          lstk setup aws
 
       - name: Start LocalStack
         env:
           LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
           DNS_ADDRESS: 0
         run: |
-          pip install localstack awscli-local[ver1]
-          pip install terraform-local
           docker pull localstack/localstack-pro:latest
           # Start LocalStack in the background
-          DEBUG=1 LOCALSTACK_AUTH_TOKEN=$LOCALSTACK_AUTH_TOKEN localstack start -d
-          # Wait 30 seconds for the LocalStack container to become ready before timing out
-          echo "Waiting for LocalStack startup..."
-          localstack wait -t 15
-          echo "Startup complete"
+          LOCALSTACK_DEBUG=1 LOCALSTACK_AUTH_TOKEN=$LOCALSTACK_AUTH_TOKEN lstk start
 
       - name: Build the SAM application
-        run: samlocal build
+        run: lstk sam build
 
       - name: Deploy the SAM application
-        run: samlocal deploy --resolve-s3 --no-confirm-changeset
-      
+        run: lstk sam deploy --resolve-s3 --no-confirm-changeset
+
       - name: List the resources
         run: |
-          awslocal sqs list-queues
-          awslocal sns list-topics
-          awslocal dynamodb list-tables
-          awslocal lambda list-functions
-          awslocal s3 ls
+          lstk aws sqs list-queues
+          lstk aws sns list-topics
+          lstk aws dynamodb list-tables
+          lstk aws lambda list-functions
+          lstk aws s3 ls
 
       - name: Send a Slack notification
         if: failure() || github.event_name != 'pull_request'

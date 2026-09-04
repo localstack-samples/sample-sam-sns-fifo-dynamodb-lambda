@@ -35,10 +35,10 @@ We are using the following AWS services and their features to build our infrastr
 
 ## Prerequisites
 
-- A valid [LocalStack for AWS license](https://localstack.cloud/pricing). Your license provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/getting-started/auth-token/) to activate LocalStack.
-- [`localstack` CLI](https://docs.localstack.cloud/getting-started/installation/#localstack-cli).
-- [Serverless Application Model](https://docs.localstack.cloud/user-guide/integrations/aws-sam/) with the [`samlocal`](https://github.com/localstack/aws-sam-cli-local) installed.
-- [AWS CLI](https://docs.localstack.cloud/user-guide/integrations/aws-cli/) with the [`awslocal` wrapper](https://docs.localstack.cloud/user-guide/integrations/aws-cli/#localstack-aws-cli-awslocal).
+- A valid [LocalStack for AWS license](https://localstack.cloud/pricing). Your license provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/aws/getting-started/auth-token/) to activate LocalStack.
+- [`lstk` CLI](https://docs.localstack.cloud/aws/developer-tools/running-localstack/lstk/).
+- [Serverless Application Model](https://docs.localstack.cloud/user-guide/integrations/aws-sam/) with `aws-sam-cli` installed, used via the `lstk sam` proxy.
+- [AWS CLI](https://docs.localstack.cloud/user-guide/integrations/aws-cli/), required by `lstk aws`.
 - [Python 3.9.0](https://www.python.org/downloads/release/python-390/) in the `PATH`
 
 ## Start LocalStack
@@ -48,10 +48,9 @@ Start LocalStack with the `LOCALSTACK_AUTH_TOKEN` pre-configured:
 ```shell
 export LOCALSTACK_AUTH_TOKEN=<your-auth-token>
 make start
-make ready
 ```
 
-We specified `DEBUG=1` to get the printed LocalStack logs directly in the terminal to help us see the event-driven architecture in action. If you prefer running LocalStack in detached mode, you can add the `-d` flag to the `localstack start` command, and use Docker Desktop to view the logs.
+We specified `LOCALSTACK_DEBUG=1` to get the printed LocalStack logs directly in the terminal to help us see the event-driven architecture in action. LocalStack always runs in the background; you can view the logs at any time with `lstk logs` or Docker Desktop.
 
 ## Instructions
 
@@ -62,7 +61,7 @@ You can build and deploy the sample application on LocalStack by running our `Ma
 To build the SAM application, run the following command:
 
 ```shell
-samlocal build
+lstk sam build
 ```
 
 If you see a `Build Succeeded` message, you can proceed to the next step.
@@ -74,7 +73,7 @@ If you see a `Build Succeeded` message, you can proceed to the next step.
 To deploy the SAM application, run the following command:
 
 ```shell
-samlocal deploy --resolve-s3
+lstk sam deploy --resolve-s3
 ```
 
 The above command will create a new managed S3 bucket to store the artifacts of the SAM application. If you want to use an existing S3 bucket, you can use the `--s3-bucket` flag to specify the bucket name. Before being deployed, the CloudFormation changeset will be displayed in the terminal. If you want to deploy the application without confirmation, you can use the `--no-confirm-changeset` flag.
@@ -82,16 +81,16 @@ The above command will create a new managed S3 bucket to store the artifacts of 
 To view the created resources, check out the CloudFormation outputs from deployed stack or run the following commands
 
 ```shell
-awslocal sqs list-queues
-awslocal sns list-topics
-awslocal dynamodb list-tables
-awslocal lambda list-functions
-awslocal s3 ls
+lstk aws sqs list-queues
+lstk aws sns list-topics
+lstk aws dynamodb list-tables
+lstk aws lambda list-functions
+lstk aws s3 ls
 ```
 
 ### Testing the application
 
-After a successful deployment, you can test the application's functionality by checking out the LocalStack logs (`localstack logs`). For more verbose logs, we have enabled `DEBUG=1`, and you can alternatively set `LS_LOG=trace-internal` to see internal calls between different services.
+After a successful deployment, you can test the application's functionality by checking out the LocalStack logs (`lstk logs`). For more verbose logs, we have enabled `LOCALSTACK_DEBUG=1`, and you can alternatively set `LS_LOG=trace-internal` to see internal calls between different services.
 
 We offer **Resource Browsers** in the LocalStack Web Application to help you visualize the resources created by the application. You can access the Web Application by visiting [**app.localstack.cloud**](https://app.localstack.cloud) in your browser. Navigate to the [CloudWatch Log Groups](https://app.localstack.cloud/resources/cloudwatch/groups) to verify the Log groups.
 
