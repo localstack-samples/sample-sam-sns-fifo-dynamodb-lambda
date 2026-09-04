@@ -44,7 +44,7 @@ jobs:
         run: |
           docker pull localstack/localstack-pro:latest
           # Start LocalStack in the background
-          LOCALSTACK_DEBUG=1 LOCALSTACK_AUTH_TOKEN=$LOCALSTACK_AUTH_TOKEN lstk start --non-interactive
+          LOCALSTACK_DEBUG=1 LOCALSTACK_AUTH_TOKEN=$LOCALSTACK_AUTH_TOKEN lstk start
 
       - name: Build the SAM application
         run: lstk sam build
