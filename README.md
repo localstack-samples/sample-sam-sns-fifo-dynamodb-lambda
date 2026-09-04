@@ -48,10 +48,9 @@ Start LocalStack with the `LOCALSTACK_AUTH_TOKEN` pre-configured:
 ```shell
 export LOCALSTACK_AUTH_TOKEN=<your-auth-token>
 make start
-make ready
 ```
 
-We specified `LOCALSTACK_DEBUG=1` to get the printed LocalStack logs directly in the terminal to help us see the event-driven architecture in action. If you prefer running LocalStack in the background, you can add the `--non-interactive` flag to the `lstk start` command, and use Docker Desktop to view the logs.
+We specified `LOCALSTACK_DEBUG=1` to get the printed LocalStack logs directly in the terminal to help us see the event-driven architecture in action. LocalStack always runs in the background; you can view the logs at any time with `lstk logs` or Docker Desktop.
 
 ## Instructions
 
