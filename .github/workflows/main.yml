@@ -52,13 +52,8 @@ jobs:
       - name: Deploy the SAM application
         run: lstk sam deploy --resolve-s3 --no-confirm-changeset
 
-      - name: List the resources
-        run: |
-          lstk aws sqs list-queues
-          lstk aws sns list-topics
-          lstk aws dynamodb list-tables
-          lstk aws lambda list-functions
-          lstk aws s3 ls
+      - name: Run tests
+        run: make test
 
       - name: Send a Slack notification
         if: failure() || github.event_name != 'pull_request'
