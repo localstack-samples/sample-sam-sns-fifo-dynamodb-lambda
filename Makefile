@@ -35,4 +35,8 @@ stop:
 logs:
 		@lstk logs > logs.txt
 
-.PHONY: usage install run start stop logs
+## Publish a job's events and check DynamoDB and S3
+test:
+		./test.sh
+
+.PHONY: usage install build deploy test start stop logs
