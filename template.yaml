@@ -21,7 +21,7 @@ Resources:
     Properties:
       CodeUri: anti-corruption-service/
       Handler: app.lambda_handler
-      Runtime: python3.9
+      Runtime: python3.12
       MemorySize: 256
       Environment:
         Variables:
@@ -64,7 +64,7 @@ Resources:
     Properties:
       CodeUri: analytics-service/
       Handler: app.lambda_handler
-      Runtime: python3.9
+      Runtime: python3.12
       MemorySize: 256
       Environment:
         Variables:
@@ -136,7 +136,7 @@ Resources:
     Properties:
       CodeUri: inventory-service/
       Handler: app.lambda_handler
-      Runtime: python3.9
+      Runtime: python3.12
       MemorySize: 256
       Environment:
         Variables:
